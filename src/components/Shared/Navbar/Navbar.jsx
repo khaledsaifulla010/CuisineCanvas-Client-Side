@@ -1,10 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
-import './Navbar.css'
+import "./Navbar.css";
 const Navbar = () => {
   return (
     <div>
-      <div className="navbar bg-base-100">
+      <div className="navbar fixed z-10 bg-black bg-opacity-80 text-white max-w-[1450px]">
         <div className="navbar-start">
           <Link to={"/"} className="flex items-center gap-1">
             <img className="w-8" src={logo} />

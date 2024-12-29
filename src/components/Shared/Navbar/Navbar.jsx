@@ -1,13 +1,14 @@
+import { Link } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
 const Navbar = () => {
   return (
     <div>
       <div className="navbar bg-base-100">
         <div className="navbar-start">
-          <div className="flex items-center gap-1">
+          <Link to={"/"} className="flex items-center gap-1">
             <img className="w-8" src={logo} />
             <h1 className="text-3xl font-bold">CuisineCanvas</h1>
-          </div>
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">

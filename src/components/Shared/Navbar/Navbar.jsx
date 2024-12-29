@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
+import './Navbar.css'
 const Navbar = () => {
   return (
     <div>
@@ -11,7 +12,7 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="navbar-center">
-          <ul className="flex items-center gap-8">
+          <ul className="flex items-center gap-8 uppercase font-semibold">
             <NavLink to={"/"}>Home</NavLink>
             <NavLink to={"/ourMenu"}>Our Menu</NavLink>
             <NavLink to={"/ourShop"}>Our Shop</NavLink>

@@ -1,0 +1,43 @@
+.custom-tab-list {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 1rem 0;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.custom-tab-list .active-tab {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #d97706; /* Gold color for active tab */
+  position: relative;
+}
+
+.custom-tab-list .active-tab::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #d97706;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.custom-tab-list .react-tabs__tab {
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937; /* Default dark gray */
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.custom-tab-list .react-tabs__tab:hover {
+  color: #d97706;
+}

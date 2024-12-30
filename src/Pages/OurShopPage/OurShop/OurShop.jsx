@@ -4,7 +4,8 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import useMenu from "../../../hooks/useMenu";
 import FoodCard from "../FoodCard/FoodCard";
-
+import "./OurShopStyles.css";
+import { useState } from "react";
 const OurShop = () => {
   const [menus] = useMenu();
 
@@ -13,16 +14,24 @@ const OurShop = () => {
   const soups = menus.filter((item) => item.category === "soup");
   const desserts = menus.filter((item) => item.category === "dessert");
   const drinks = menus.filter((item) => item.category === "drinks");
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const handleTabSelect = (index) => {
+    setSelectedIndex(index);
+  };
   return (
     <div className="mb-24">
       <Cover img={shopImage} title={"OUR SHOP"}></Cover>
-      <Tabs>
-        <TabList>
-          <Tab>Salads</Tab>
-          <Tab>Pizzas</Tab>
-          <Tab>Soups</Tab>
-          <Tab>Desserts</Tab>
-          <Tab>Drinks</Tab>
+      <Tabs selectedIndex={selectedIndex} onSelect={handleTabSelect}>
+        <TabList className="custom-tab-list">
+          <Tab className={selectedIndex === 0 ? "active-tab" : ""}>Salads</Tab>
+          <Tab className={selectedIndex === 1 ? "active-tab" : ""}>Pizzas</Tab>
+          <Tab className={selectedIndex === 2 ? "active-tab" : ""}>Soups</Tab>
+          <Tab className={selectedIndex === 3 ? "active-tab" : ""}>
+            Desserts
+          </Tab>
+          <Tab className={selectedIndex === 4 ? "active-tab" : ""}>Drinks</Tab>
         </TabList>
 
         <TabPanel className="mt-12">

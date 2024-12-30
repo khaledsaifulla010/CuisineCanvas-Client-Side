@@ -4,6 +4,7 @@ import menuBg from "../../../assets/menu/menuBg.jpg";
 import TodaysOffer from "../TodaysOffer/TodaysOffer";
 import DessertsMenu from "../DessertsMenu/DessertsMenu";
 import PizzasMenu from "../PizzasMenu/PizzasMenu";
+import SaladsMenu from "../SaladsMenu/SaladsMenu";
 const OurMenu = () => {
   return (
     <div>
@@ -15,6 +16,7 @@ const OurMenu = () => {
       <TodaysOffer></TodaysOffer>
       <DessertsMenu></DessertsMenu>
       <PizzasMenu></PizzasMenu>
+      <SaladsMenu></SaladsMenu>
     </div>
   );
 };

@@ -7,7 +7,7 @@ const OurMenu = () => {
       <Helmet>
         <title>CuisineCanvas || Our Menu</title>
       </Helmet>
-      <h1>Our Menu</h1>
+      
       <Cover img={menuBg} title={"OUR MENU"}></Cover>
     </div>
   );

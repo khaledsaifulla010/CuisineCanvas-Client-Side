@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import Cover from "../../../components/Shared/Cover/Cover";
 import menuBg from "../../../assets/menu/menuBg.jpg";
 import TodaysOffer from "../TodaysOffer/TodaysOffer";
+import DessertsMenu from "../DessertsMenu/DessertsMenu";
 const OurMenu = () => {
   return (
     <div>
@@ -11,6 +12,7 @@ const OurMenu = () => {
 
       <Cover img={menuBg} title={"OUR MENU"}></Cover>
       <TodaysOffer></TodaysOffer>
+      <DessertsMenu></DessertsMenu>
     </div>
   );
 };

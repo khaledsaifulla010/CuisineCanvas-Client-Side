@@ -1,4 +1,4 @@
-import React from "react";
+
 
 const PopularMenusCard = ({ menu }) => {
   const { name, recipe, image, price } = menu;

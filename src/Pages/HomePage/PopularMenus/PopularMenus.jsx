@@ -1,16 +1,11 @@
-import axios from "axios";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
-import { useState } from "react";
+import useMenu from "../../../hooks/useMenu";
+
 import PopularMenusCard from "../PopularMenusCard/PopularMenusCard";
 
 const PopularMenus = () => {
-  const [menus, setMenus] = useState([]);
-  axios.get("./menu.json").then((data) => {
-    const popularItems = data.data.filter(
-      (item) => item.category === "popular"
-    );
-    setMenus(popularItems);
-  });
+  const [menus] = useMenu();
+  const PopularMenus = menus.filter((item) => item.category === "popular");
 
   return (
     <div className="mb-12">
@@ -19,7 +14,7 @@ const PopularMenus = () => {
         heading={"OUR POPULAR MENUS"}
       ></SectionTitle>
       <div className="flex flex-wrap justify-between gap-6 ">
-        {menus.map((menu) => (
+        {PopularMenus.map((menu) => (
           <div key={menu._id} className="w-[48%]">
             <PopularMenusCard menu={menu} />
           </div>

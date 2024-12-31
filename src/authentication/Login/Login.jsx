@@ -1,24 +1,42 @@
+import {
+  loadCaptchaEnginge,
+  LoadCanvasTemplate,
+  LoadCanvasTemplateNoReload,
+  validateCaptcha,
+} from "react-simple-captcha";
 import Lottie from "lottie-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import loginLottie from "../../../public/loginLottie.json";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log(email, password);
+  };
+
+  useEffect(() => {
+    loadCaptchaEnginge(6);
+  }, []);
+
   return (
     <div>
-      <div className="w-[1200px] ml-16 rounded-xl mt-12">
+      <div className="w-[1200px] ml-16 rounded-xl mt-12 mb-36">
         <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-600 -mb-4 p-8 ml-[500px]">
           Please Login
         </h1>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-12">
           <div>
             <Lottie className="w-[600px]" animationData={loginLottie}></Lottie>
           </div>
 
           <div className="card bg-base-100 border w-[600px] shadow-lg transition-all hover:shadow-2xl">
-            <form className="card-body">
+            <form className="card-body" onSubmit={handleSignIn}>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text font-bold text-xl">Email</span>
@@ -50,11 +68,24 @@ const Login = () => {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
+
               <label className="label">
                 <Link className="label-text-alt text-red-500 font-semibold text-base underline">
                   Forgot password?
                 </Link>
               </label>
+              <div className="form-control">
+                <label className="label ">
+                  <LoadCanvasTemplate />
+                </label>
+                <input
+                  type="text"
+                  name="captcha"
+                  placeholder="Type The Captcha Above"
+                  className="input input-bordered shadow-lg transition-all hover:shadow-xl focus:shadow-xl"
+                  required
+                />
+              </div>
               <div className="form-control mt-6">
                 <button className="border p-2 w-full rounded-xl text-purple-500 bg-purple-200 border-purple-300 font-bold text-lg shadow-md transition duration-500 ease-in-out transform hover:scale-105 active:scale-95">
                   Login

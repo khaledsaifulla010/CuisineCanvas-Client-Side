@@ -1,18 +1,18 @@
 import {
   loadCaptchaEnginge,
   LoadCanvasTemplate,
-  LoadCanvasTemplateNoReload,
   validateCaptcha,
 } from "react-simple-captcha";
 import Lottie from "lottie-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import loginLottie from "../../../public/loginLottie.json";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const [disabled, setDisabled] = useState(true);
+  const captchaRef = useRef(null);
   const handleSignIn = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -23,6 +23,15 @@ const Login = () => {
   useEffect(() => {
     loadCaptchaEnginge(6);
   }, []);
+
+  const handleValidateCaptcha = () => {
+    const user_captcha_value = captchaRef.current.value;
+    if (validateCaptcha(user_captcha_value)) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  };
 
   return (
     <div>
@@ -81,13 +90,27 @@ const Login = () => {
                 <input
                   type="text"
                   name="captcha"
+                  ref={captchaRef}
                   placeholder="Type The Captcha Above"
                   className="input input-bordered shadow-lg transition-all hover:shadow-xl focus:shadow-xl"
-                  required
                 />
+                <button
+                  onClick={handleValidateCaptcha}
+                  className=" btn-xs w-16 border rounded-lg absolute bottom-[280px] left-[490px]"
+                >
+                  Validate
+                </button>
               </div>
               <div className="form-control mt-6">
-                <button className="border p-2 w-full rounded-xl text-purple-500 bg-purple-200 border-purple-300 font-bold text-lg shadow-md transition duration-500 ease-in-out transform hover:scale-105 active:scale-95">
+                <button
+                  disabled={disabled}
+                  className={`border p-2 w-full rounded-xl font-bold text-lg shadow-md transition duration-500 ease-in-out transform
+      ${
+        disabled
+          ? "bg-slate-300 text-slate-500 border-slate-400 cursor-not-allowed"
+          : "text-purple-500 bg-purple-200 border-purple-300 hover:scale-105 active:scale-95"
+      }`}
+                >
                   Login
                 </button>
               </div>

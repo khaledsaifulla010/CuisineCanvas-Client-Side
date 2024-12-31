@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
+import { FaUserCircle } from "react-icons/fa";
 import "./Navbar.css";
 const Navbar = () => {
   return (
@@ -21,7 +22,17 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Button</a>
+          <div className="dropdown dropdown-end dropdown-hover">
+            <div tabIndex={0} role="button">
+              <FaUserCircle className="text-4xl" />
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu  rounded-box z-[1] w-52 p-2 shadow bg-white text-black"
+            >
+              <Link to={"/login"}>Login</Link>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import loginLottie from "../../../public/loginLottie.json";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,6 +17,11 @@ const Login = () => {
   const [disabled, setDisabled] = useState(true);
 
   const { signInUser, googleSignIn } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const handleSignIn = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -28,6 +33,7 @@ const Login = () => {
           position: "top-right",
           theme: "colored",
         });
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         toast.error("Something Went Wrong!", {

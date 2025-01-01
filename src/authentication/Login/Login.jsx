@@ -4,16 +4,17 @@ import {
   validateCaptcha,
 } from "react-simple-captcha";
 import Lottie from "lottie-react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import loginLottie from "../../../public/loginLottie.json";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const captchaRef = useRef(null);
 
   const { signInUser, googleSignIn } = useContext(AuthContext);
   const handleSignIn = (e) => {
@@ -24,6 +25,10 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
+        toast.success("Login Successfully!", {
+          position: "top-right",
+          theme: "colored",
+        });
       })
       .catch((error) => console.log(error));
   };
@@ -40,8 +45,8 @@ const Login = () => {
     loadCaptchaEnginge(6);
   }, []);
 
-  const handleValidateCaptcha = () => {
-    const user_captcha_value = captchaRef.current.value;
+  const handleValidateCaptcha = (e) => {
+    const user_captcha_value = e.target.value;
     if (validateCaptcha(user_captcha_value)) {
       setDisabled(false);
     } else {
@@ -104,18 +109,12 @@ const Login = () => {
                   <LoadCanvasTemplate />
                 </label>
                 <input
+                  onBlur={handleValidateCaptcha}
                   type="text"
                   name="captcha"
-                  ref={captchaRef}
                   placeholder="Type The Captcha Above"
                   className="input input-bordered shadow-lg transition-all hover:shadow-xl focus:shadow-xl"
                 />
-                <button
-                  onClick={handleValidateCaptcha}
-                  className=" btn-xs w-16 border rounded-lg absolute bottom-[280px] left-[490px]"
-                >
-                  Validate
-                </button>
               </div>
               <div className="form-control mt-6">
                 <button

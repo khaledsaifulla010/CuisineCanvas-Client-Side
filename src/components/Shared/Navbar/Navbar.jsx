@@ -30,8 +30,23 @@ const Navbar = () => {
         </div>
         <div className="navbar-end">
           <div className="dropdown dropdown-end dropdown-hover">
-            <div tabIndex={0} role="button">
-              <FaUserCircle className="text-4xl" />
+            <div tabIndex={0} role="button"></div>
+
+            <div
+              tabIndex={0}
+              role="button"
+              className="m-1"
+              aria-label="User profile"
+            >
+              {user?.photoURL ? (
+                <img
+                  className="w-16 h-16 border border-dotted border-slate-500 rounded-full p-1"
+                  src={user.photoURL}
+                  alt="User profile"
+                />
+              ) : (
+                <FaUserCircle className="text-5xl" />
+              )}
             </div>
             <ul
               tabIndex={0}

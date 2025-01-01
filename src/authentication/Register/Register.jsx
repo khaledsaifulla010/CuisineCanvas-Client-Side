@@ -2,23 +2,41 @@ import Lottie from "lottie-react";
 import registerLottie from "../../../public/registerLottie.json";
 import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import AuthContext from "../../context/AuthContext/AuthContext";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Register = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, updateUserProfile } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
+  const redirects = useNavigate();
+
   const onSubmit = (data) => {
     createUser(data.email, data.password).then((result) => {
-      console.log(result.user);
+      updateUserProfile(data.name, data.photo_URL)
+        .then(() => {
+          toast.success("Register Successfully!", {
+            position: "top-right",
+            theme: "colored",
+          });
+          reset();
+          redirects("/");
+        })
+        .catch((error) => {
+          toast.error("Something Went Wrong!", {
+            position: "top-right",
+            theme: "colored",
+          });
+        });
     });
   };
 

@@ -1,11 +1,14 @@
 import Lottie from "lottie-react";
 import registerLottie from "../../../public/registerLottie.json";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import AuthContext from "../../context/AuthContext/AuthContext";
 
 const Register = () => {
+  const { createUser } = useContext(AuthContext);
+
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -14,7 +17,9 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    createUser(data.email, data.password).then((result) => {
+      console.log(result.user);
+    });
   };
 
   return (

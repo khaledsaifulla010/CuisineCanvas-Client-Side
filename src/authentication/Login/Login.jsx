@@ -24,21 +24,33 @@ const Login = () => {
     signInUser(email, password)
       .then((result) => {
         const user = result.user;
-        console.log(user);
         toast.success("Login Successfully!", {
           position: "top-right",
           theme: "colored",
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        toast.error("Something Went Wrong!", {
+          position: "top-right",
+          theme: "colored",
+        });
+      });
   };
 
   const handleGoogleSignIn = () => {
     googleSignIn()
       .then((result) => {
-        console.log(result.user);
+        toast.success("Login Successfully!", {
+          position: "top-right",
+          theme: "colored",
+        });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        toast.error("Something Went Wrong!", {
+          position: "top-right",
+          theme: "colored",
+        });
+      });
   };
 
   useEffect(() => {

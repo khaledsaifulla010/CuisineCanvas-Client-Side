@@ -2,7 +2,14 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
 import { FaUserCircle } from "react-icons/fa";
 import "./Navbar.css";
+import { useContext } from "react";
+import AuthContext from "../../../context/AuthContext/AuthContext";
 const Navbar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const handleSignOut = () => {
+    logout().then(() => {});
+  };
+
   return (
     <div>
       <div className="navbar fixed z-10 bg-black bg-opacity-80 text-white max-w-[1450px]">
@@ -30,7 +37,21 @@ const Navbar = () => {
               tabIndex={0}
               className="dropdown-content menu  rounded-box z-[1] w-52 p-2 shadow bg-white text-black"
             >
-              <Link to={"/login"}>Login</Link>
+              {user ? (
+                <button
+                  className="border px-2 py-1 rounded-xl font-bold text-red-600 bg-red-100 border-read-200 mt-2 text-center w-full"
+                  onClick={handleSignOut}
+                >
+                  SignOut
+                </button>
+              ) : (
+                <Link
+                  className="border px-2 py-1 rounded-xl text-blue-700 bg-blue-50 border-blue-200 w-full text-center font-bold"
+                  to={"/login"}
+                >
+                  Login
+                </Link>
+              )}
             </ul>
           </div>
         </div>

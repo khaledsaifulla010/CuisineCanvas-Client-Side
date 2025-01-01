@@ -15,12 +15,12 @@ const Login = () => {
   const [disabled, setDisabled] = useState(true);
   const captchaRef = useRef(null);
 
-  const { signIn, googleSignIn } = useContext(AuthContext);
+  const { signInUser, googleSignIn } = useContext(AuthContext);
   const handleSignIn = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    signIn(email, password)
+    signInUser(email, password)
       .then((result) => {
         const user = result.user;
         console.log(user);

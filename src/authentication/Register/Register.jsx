@@ -99,7 +99,12 @@ const Register = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
-                  {...register("password", { required: true })}
+                  {...register("password", {
+                    required: true,
+                    minLength: 6,
+                    maxLength: 20,
+                    pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+                  })}
                   placeholder="Enter Your Password"
                   className="input input-bordered shadow-lg transition-all hover:shadow-xl focus:shadow-xl"
                 />
@@ -113,6 +118,12 @@ const Register = () => {
                 {errors.password && (
                   <span className="text-red-600 font-semibold">
                     This field is required!
+                  </span>
+                )}
+                {errors.password?.type === "pattern" && (
+                  <span className="text-red-600 font-semibold">
+                    Atleast one Uppercase, one Lowercase Letter & minimum Six
+                    Characters!
                   </span>
                 )}
               </div>

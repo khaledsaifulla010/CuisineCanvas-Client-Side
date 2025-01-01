@@ -1,13 +1,22 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
 import { FaUserCircle } from "react-icons/fa";
 import "./Navbar.css";
 import { useContext } from "react";
 import AuthContext from "../../../context/AuthContext/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const redirects = useNavigate();
   const handleSignOut = () => {
-    logout().then(() => {});
+    logout().then(() => {
+      toast.success("Sign Out Successfully!", {
+        position: "top-right",
+        theme: "colored",
+      });
+    });
+    redirects("/");
   };
 
   return (

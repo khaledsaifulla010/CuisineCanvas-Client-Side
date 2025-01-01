@@ -4,20 +4,36 @@ import {
   validateCaptcha,
 } from "react-simple-captcha";
 import Lottie from "lottie-react";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import loginLottie from "../../../public/loginLottie.json";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import AuthContext from "../../context/AuthContext/AuthContext";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const captchaRef = useRef(null);
+
+  const { signIn, googleSignIn } = useContext(AuthContext);
   const handleSignIn = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(email, password);
+    signIn(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((error) => console.log(error));
   };
 
   useEffect(() => {
@@ -126,7 +142,10 @@ const Login = () => {
               </Link>
             </div>
             <div className="divider px-9">OR</div>
-            <button className="border p-2 rounded-xl w-[530px] flex items-center gap-2 ml-8 mb-8 mt-2 text-lg shadow-md font-bold transition duration-500 ease-in-out transform hover:scale-105 active:scale-95 text-black">
+            <button
+              onClick={handleGoogleSignIn}
+              className="border p-2 rounded-xl w-[530px] flex items-center gap-2 ml-8 mb-8 mt-2 text-lg shadow-md font-bold transition duration-500 ease-in-out transform hover:scale-105 active:scale-95 text-black"
+            >
               <FcGoogle className="ml-40 text-2xl mt-1"></FcGoogle>
               Login with Google
             </button>

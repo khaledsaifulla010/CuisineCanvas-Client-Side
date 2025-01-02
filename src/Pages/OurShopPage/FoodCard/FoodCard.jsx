@@ -1,10 +1,24 @@
+import axios from "axios";
 import useAuth from "../../../hooks/useAuth";
 
 const FoodCard = ({ menu }) => {
-  const { name, recipe, image, price } = menu;
+  const { name, recipe, image, price, _id } = menu;
   const { user } = useAuth();
   const handleAddToCart = (food) => {
-    console.log(food);
+    console.log(food, user.email);
+
+    if (user && user.email) {
+      const cartItem = {
+        menuId: _id,
+        email: user.email,
+        name,
+        image,
+        price,
+      };
+      axios
+        .post("http://localhost:5000/carts", cartItem)
+        .then((data) => console.log(data.data));
+    }
   };
 
   return (

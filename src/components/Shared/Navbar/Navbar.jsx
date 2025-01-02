@@ -6,6 +6,7 @@ import { useContext } from "react";
 import AuthContext from "../../../context/AuthContext/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaCartPlus } from "react-icons/fa";
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const redirects = useNavigate();
@@ -35,6 +36,12 @@ const Navbar = () => {
             <NavLink to={"/ourShop"}>Our Shop</NavLink>
             <NavLink to={"/contactUs"}>Contact Us</NavLink>
             <NavLink to={"/dashboard"}>Dashboard</NavLink>
+            <button className="flex items-center">
+              <FaCartPlus className="text-3xl" />
+              <div className=" absolute ml-6 mb-5 badge badge-secondary">
+                +0
+              </div>
+            </button>
           </ul>
         </div>
         <div className="navbar-end">

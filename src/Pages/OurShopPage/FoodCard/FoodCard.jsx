@@ -1,5 +1,11 @@
+import useAuth from "../../../hooks/useAuth";
+
 const FoodCard = ({ menu }) => {
   const { name, recipe, image, price } = menu;
+  const { user } = useAuth();
+  const handleAddToCart = (food) => {
+    console.log(food);
+  };
 
   return (
     <div className="relative bg-white shadow-md rounded-lg overflow-hidden w-[460px] border">
@@ -16,7 +22,10 @@ const FoodCard = ({ menu }) => {
         <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
         <p className="text-sm text-gray-600 mt-1">{recipe}</p>
         {/* Button Section */}
-        <button className="mt-4 btn btn-outline border-0 border-b-4 bg-slate-100 font-bold ml-[150px]">
+        <button
+          onClick={() => handleAddToCart(menu)}
+          className="mt-4 btn btn-outline border-0 border-b-4 bg-slate-100 font-bold ml-[150px]"
+        >
           ADD TO CART
         </button>
       </div>

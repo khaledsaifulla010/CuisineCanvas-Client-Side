@@ -7,9 +7,13 @@ import AuthContext from "../../../context/AuthContext/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCartPlus } from "react-icons/fa";
+import useCart from "../../../hooks/useCart";
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const redirects = useNavigate();
+
+  const [cart] = useCart();
+
   const handleSignOut = () => {
     logout().then(() => {
       toast.success("Sign Out Successfully!", {
@@ -39,7 +43,7 @@ const Navbar = () => {
             <button className="flex items-center">
               <FaCartPlus className="text-3xl" />
               <div className=" absolute ml-6 mb-5 badge badge-secondary">
-                +0
+                +{cart.length}
               </div>
             </button>
           </ul>

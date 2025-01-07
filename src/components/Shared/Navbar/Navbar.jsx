@@ -40,12 +40,15 @@ const Navbar = () => {
             <NavLink to={"/ourShop"}>Our Shop</NavLink>
             <NavLink to={"/contactUs"}>Contact Us</NavLink>
             <NavLink to={"/dashboard"}>Dashboard</NavLink>
-            <button className="flex items-center">
-              <FaCartPlus className="text-3xl" />
-              <div className=" absolute ml-6 mb-5 badge badge-secondary">
-                +{cart.length}
-              </div>
-            </button>
+            <Link to={'/dashboard/cart'}>
+              {" "}
+              <button className="flex items-center">
+                <FaCartPlus className="text-3xl" />
+                <div className=" absolute ml-6 mb-5 badge badge-secondary">
+                  +{cart.length}
+                </div>
+              </button>
+            </Link>
           </ul>
         </div>
         <div className="navbar-end">

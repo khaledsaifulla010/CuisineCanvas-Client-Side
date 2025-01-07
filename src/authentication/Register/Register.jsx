@@ -7,8 +7,11 @@ import { useForm } from "react-hook-form";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 const Register = () => {
   const { createUser, updateUserProfile } = useContext(AuthContext);
+
+  const axiosPublic = useAxiosPublic();
 
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -24,12 +27,23 @@ const Register = () => {
     createUser(data.email, data.password).then((result) => {
       updateUserProfile(data.name, data.photo_URL)
         .then(() => {
-          toast.success("Register Successfully!", {
-            position: "top-right",
-            theme: "colored",
+          // create user entry in database //
+
+          const userInfo = {
+            name: data.name,
+            email: data.email,
+          };
+
+          axiosPublic.post("/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              toast.success("Register Successfully!", {
+                position: "top-right",
+                theme: "colored",
+              });
+              reset();
+              redirects("/");
+            }
           });
-          reset();
-          redirects("/");
         })
         .catch((error) => {
           toast.error("Something Went Wrong!", {

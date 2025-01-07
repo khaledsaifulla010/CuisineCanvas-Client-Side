@@ -12,10 +12,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [disabled, setDisabled] = useState(true);
-
+  const axiosPublic = useAxiosPublic();
   const { signInUser, googleSignIn } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -29,11 +31,11 @@ const Login = () => {
     signInUser(email, password)
       .then((result) => {
         const user = result.user;
+
         toast.success("Login Successfully!", {
           position: "top-right",
           theme: "colored",
         });
-        navigate(from, { replace: true });
       })
       .catch((error) => {
         toast.error("Something Went Wrong!", {
@@ -46,9 +48,14 @@ const Login = () => {
   const handleGoogleSignIn = () => {
     googleSignIn()
       .then((result) => {
-        toast.success("Login Successfully!", {
-          position: "top-right",
-          theme: "colored",
+        const userInfo = {
+          name: result.user?.displayName,
+          email: result.user?.email,
+        };
+
+        axiosPublic.post("/users", userInfo).then((res) => {
+      
+          navigate("/");
         });
       })
       .catch((error) => {

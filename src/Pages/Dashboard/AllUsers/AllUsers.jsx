@@ -3,7 +3,8 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { FaUsers } from "react-icons/fa6";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import Swal from "sweetalert2";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
 
@@ -35,6 +36,18 @@ const AllUsers = () => {
               icon: "success",
             });
           }
+        });
+      }
+    });
+  };
+
+  const handleMakeAdmin = (user) => {
+    axiosSecure.patch(`/users/admin/${user._id}`).then((res) => {
+      if (res.data.modifiedCount > 0) {
+        refetch();
+        toast.success(`${user.name} is an Admin Now`, {
+          position: "top-right",
+          theme: "colored",
         });
       }
     });
@@ -76,7 +89,13 @@ const AllUsers = () => {
                           {user.email}
                         </td>
                         <td className="text-center py-3 px-4 text-orange-600 font-bold text-2xl">
-                          <FaUsers />
+                          {user.role === "Admin" ? (
+                            "Admin"
+                          ) : (
+                            <button onClick={() => handleMakeAdmin(user)}>
+                              <FaUsers />
+                            </button>
+                          )}
                         </td>
 
                         <td className="text-center py-3 px-4 text-red-600 font-bold text-2xl">

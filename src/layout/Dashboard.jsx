@@ -12,11 +12,12 @@ import {
 import { FaCalendar, FaList } from "react-icons/fa6";
 import { NavLink, Outlet } from "react-router-dom";
 import useCart from "../hooks/useCart";
+import useAdmin from "../hooks/useAdmin";
 
 const Dashboard = () => {
   const [cart] = useCart();
 
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
 
   return (
     <div className="flex mt-12 max-w-[1450px] mx-auto">

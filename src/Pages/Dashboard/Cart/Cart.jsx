@@ -2,47 +2,60 @@ import { RiDeleteBin2Fill } from "react-icons/ri";
 import useCart from "../../../hooks/useCart";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
-  const [cart,refetch] = useCart();
+  const [cart, refetch] = useCart();
   const totalPrice = cart.reduce((total, item) => total + item.price, 0);
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
-  const handleDelete = (id)=>{
-   Swal.fire({
-     title: "Are you sure?",
-     text: "You won't be able to revert this!",
-     icon: "warning",
-     showCancelButton: true,
-     confirmButtonColor: "#3085d6",
-     cancelButtonColor: "#d33",
-     confirmButtonText: "Yes, delete it!",
-   }).then((result) => {
-     if (result.isConfirmed) {
-    
-    axiosSecure.delete(`/carts/${id}`)
-    .then(res=>{
-        if(res.data.deletedCount > 0){
-            refetch()
-             Swal.fire({
-               title: "Deleted!",
-               text: "Your file has been deleted.",
-               icon: "success",
-             });
-        }
-    })
-     }
-   });
-  }
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/carts/${id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
+  };
 
   return (
     <div>
       <div className="flex items-center justify-around mt-12">
         <h1 className="text-5xl font-bold">Total Items : {cart.length} </h1>
         <h1 className="text-5xl font-bold">Total Prices : {totalPrice} </h1>
-        <button className="border p-2 rounded-md text-purple-700 border-purple-400 font-bold">
-          Pay
-        </button>
+        {cart.length ? (
+          <Link to={"/dashboard/payment"}>
+            {" "}
+            <button className="border p-2 rounded-md text-purple-700 border-purple-400 font-bold">
+              {" "}
+              Pay
+            </button>
+          </Link>
+        ) : (
+          <button
+            disabled={!cart.length}
+            className="border p-2 rounded-md text-slate-700 border-slate-400 font-bold cursor-not-allowed"
+          >
+            {" "}
+            Pay
+          </button>
+        )}
       </div>
       <div>
         <div className="mt-12">
@@ -84,7 +97,7 @@ const Cart = () => {
                         </td>
 
                         <td className="text-center py-3 px-4 text-red-600 font-bold text-2xl">
-                          <button onClick={()=>handleDelete(singleCart._id)}>
+                          <button onClick={() => handleDelete(singleCart._id)}>
                             <RiDeleteBin2Fill />
                           </button>
                         </td>

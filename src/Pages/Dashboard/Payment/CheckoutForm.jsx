@@ -1,10 +1,27 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useCart from "../../../hooks/useCart";
+import useAuth from "../../../hooks/useAuth";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [errors, setError] = useState();
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const [cart] = useCart();
+  const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+  const [clientSecret, setClientSecret] = useState("");
+  const [transitionId, setTransitionId] = useState("");
+  useEffect(() => {
+    axiosSecure
+      .post("/create-payment-intent", { price: totalPrice })
+      .then((res) => {
+        console.log(res.data.clientSecret);
+        setClientSecret(res.data.clientSecret);
+      });
+  }, [axiosSecure, totalPrice]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,7 +45,29 @@ const CheckoutForm = () => {
       setError(error.message);
     } else {
       console.log("[PaymentMethod]", paymentMethod);
-      setError(error.message);
+      setError("");
+    }
+
+    // Confirm Payment //
+
+    const { paymentIntent, error: confirmError } =
+      await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: {
+            name: user?.displayName || "Anonymous",
+            email: user?.email || "Anonymous",
+          },
+        },
+      });
+    if (confirmError) {
+      console.log("Confirm Error");
+    } else {
+      console.log("Payment Intent", paymentIntent);
+      if (paymentIntent.status === "succeeded") {
+        console.log("Transaction Id", paymentIntent.id);
+        setTransitionId(paymentIntent.id);
+      }
     }
   };
 
@@ -78,7 +117,7 @@ const CheckoutForm = () => {
         />
         <button
           type="submit"
-          disabled={!stripe}
+          disabled={!stripe || !clientSecret}
           style={{
             backgroundColor: stripe ? "#4CAF50" : "#ccc",
             color: "#fff",
@@ -99,6 +138,11 @@ const CheckoutForm = () => {
           Pay
         </button>
         <p className="text-red-600 font-bold text-base">{errors}</p>
+        <div>
+          {transitionId && (
+            <p className="text-green-600 font-bold text-xl">{transitionId}</p>
+          )}
+        </div>
       </form>
     </div>
   );

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCart from "../../../hooks/useCart";
 import useAuth from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -10,17 +11,19 @@ const CheckoutForm = () => {
   const [errors, setError] = useState();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const [cart] = useCart();
+  const [cart, refetch] = useCart();
   const totalPrice = cart.reduce((total, item) => total + item.price, 0);
   const [clientSecret, setClientSecret] = useState("");
   const [transitionId, setTransitionId] = useState("");
   useEffect(() => {
-    axiosSecure
-      .post("/create-payment-intent", { price: totalPrice })
-      .then((res) => {
-        console.log(res.data.clientSecret);
-        setClientSecret(res.data.clientSecret);
-      });
+    if (totalPrice > 0) {
+      axiosSecure
+        .post("/create-payment-intent", { price: totalPrice })
+        .then((res) => {
+          console.log(res.data.clientSecret);
+          setClientSecret(res.data.clientSecret);
+        });
+    }
   }, [axiosSecure, totalPrice]);
 
   const handleSubmit = async (event) => {
@@ -67,6 +70,30 @@ const CheckoutForm = () => {
       if (paymentIntent.status === "succeeded") {
         console.log("Transaction Id", paymentIntent.id);
         setTransitionId(paymentIntent.id);
+
+        // now save the payments in database //
+
+        const payments = {
+          email: user.email,
+          price: totalPrice,
+          transitionId: paymentIntent.id,
+          date: new Date(),
+          cartIds: cart.map((item) => item._id),
+          menuItemIds: cart.map((item) => item.menuId),
+          status: "pending",
+        };
+        const res = await axiosSecure.post("/payments", payments);
+        console.log("payment save", res);
+        refetch();
+        if (res.data?.paymentResult?.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Thank You For Purchasing!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
       }
     }
   };
